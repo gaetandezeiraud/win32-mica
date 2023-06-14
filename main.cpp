@@ -113,25 +113,14 @@ LRESULT MainWindow::HandleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         {
             // Mica
-            enum DWMWINDOWATTRIBUTE
-            {
-                DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
-                DWMWA_MICA_EFFECT = 1029
-            };
+            BOOL value = TRUE;
+            DwmSetWindowAttribute(m_hwnd, DWMWA_USE_HOSTBACKDROPBRUSH, &value, sizeof(value));
 
-            enum DWM_BOOL
-            {
-                DWMWCP_FALSE = 0,
-                DWMWCP_TRUE = 1
-            };
-
-            // Dark mode
-            DWM_BOOL darkPreference = DWMWCP_TRUE;
-            DwmSetWindowAttribute(m_hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &darkPreference, sizeof(darkPreference));
-
-            // Mica
-            DWM_BOOL micaPreference = DWMWCP_TRUE;
-            DwmSetWindowAttribute(m_hwnd, DWMWA_MICA_EFFECT, &micaPreference, sizeof(micaPreference));
+            // DWMSBT_MAINWINDOW - mica
+            // DWMSBT_TABBEDWINDOW - tabbed
+            // DWMSBT_TRANSIENTWINDOW - acrylic
+            DWM_SYSTEMBACKDROP_TYPE backdrop_type = DWMSBT_MAINWINDOW;
+            DwmSetWindowAttribute(m_hwnd, DWMWA_SYSTEMBACKDROP_TYPE, &backdrop_type, sizeof(backdrop_type));
         }
         return 0;
 
